@@ -1,41 +1,23 @@
-# =============================
-# 🎵 Stay or Skip — Main Streamlit App
-# =============================
 import streamlit as st
 import pandas as pd
 from pathlib import Path
 
-# -----------------------------
-# 1️⃣ 데이터 불러오기 함수
-# -----------------------------
+st.set_page_config(page_title="Stay or Skip 🎧", page_icon="🎧", layout="wide")
+
 @st.cache_data(show_spinner=False)
 def load_data():
-    path = Path(__file__).with_name("spotify_merged.xlsx")  # 같은 폴더의 엑셀 파일 경로
+    # 현재 파일과 같은 폴더의 spotify_merged.xlsx 읽기
+    path = Path(__file__).with_name("spotify_merged.xlsx")
     return pd.read_excel(path)
 
-# -----------------------------
-# 2️⃣ 예외 처리 (파일 없거나 에러 방지)
-# -----------------------------
 try:
     tidy = load_data()
 except FileNotFoundError:
-    st.error("⚠️ `spotify_merged.xlsx` 파일을 찾을 수 없습니다. 레포 루트에 올려주세요.")
+    st.error("`spotify_merged.xlsx` 파일을 찾을 수 없습니다. StayOrSkip 폴더에 올려주세요.")
     st.stop()
 except Exception as e:
-    st.error(f"데이터 로드 중 오류 발생: {e}")
+    st.exception(e)
     st.stop()
-
-# -----------------------------
-# 3️⃣ 페이지 설정 및 내용
-# -----------------------------
-st.set_page_config(page_title="Stay or Skip 🎵", page_icon="🎧", layout="wide")
-
-st.title("🎵 Stay or Skip — Spotify User Behavior Dashboard")
-
-# 예시: 데이터 확인용
-st.dataframe(tidy.head())
-
-# 이후에 네 탭 구성(tabs[3])이나 그래프 코드들이 여기 아래에 들어가면 됨
 
 # app_stay_or_skip.py — Spotify Green themed
 import streamlit as st
@@ -53,8 +35,6 @@ def tight_top(px: int):
     """바로 다음 요소의 위 여백을 줄이는 용도 (음수 px 권장)"""
     import streamlit as st
     st.markdown(f'<div style="margin-top:{px}px;"></div>', unsafe_allow_html=True)
-
-st.set_page_config(page_title="Stay or Skip", page_icon="🎧", layout="wide")
 
 # ================= CSS =================
 st.markdown("""
